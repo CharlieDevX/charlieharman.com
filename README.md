@@ -21,16 +21,24 @@ npm run audit:site
 
 The static site is generated in `dist/`.
 
-## Cloudflare Pages deployment
+## Cloudflare Workers deployment
+
+The site deploys to Cloudflare Workers static assets via Workers Builds. Configuration lives in
+`wrangler.jsonc` (`assets.directory` is `./dist`) and `.node-version` pins the build image to Node 22.
 
 1. Push this repository to the Git provider connected to Cloudflare.
-2. In **Workers & Pages**, create a Pages application and select this repository.
-3. Use `npm run build` as the build command and `dist` as the output directory. Set `NODE_VERSION` to `22` (at least `22.12.0`). No server adapter is required.
-4. Deploy, then open the Pages project’s **Custom domains** panel and add `charlieharman.com` (and optionally `www.charlieharman.com` with a redirect to the apex).
-5. If the domain already uses Cloudflare DNS, Pages provisions the required record and certificate. For external DNS, follow the CNAME target shown by Pages.
-6. After DNS and TLS are active, verify `/`, all project routes, `/sitemap-index.xml`, `/robots.txt`, and the custom 404 on the production hostname.
+2. In **Workers & Pages**, create an application and import this repository.
+3. Use `npm run build` as the build command and `npx wrangler deploy` as the deploy command. The
+   output directory and Node version come from `wrangler.jsonc` and `.node-version`, not the
+   dashboard. No server adapter is required — `astro.config.mjs` is `output: 'static'`.
+4. Deploy. Every push to `main` rebuilds and republishes automatically.
+5. Open the Worker's **Domains & Routes** panel and add `charlieharman.com` (and optionally
+   `www.charlieharman.com` redirecting to the apex). With the domain already on Cloudflare DNS, the
+   record and TLS certificate are provisioned automatically.
+6. After DNS and TLS are active, verify `/`, all project routes, `/sitemap-index.xml`, `/robots.txt`,
+   and the custom 404 on the production hostname.
 
-Reference: [Cloudflare Pages — Deploy an Astro site](https://developers.cloudflare.com/pages/framework-guides/deploy-an-astro-site/)
+Reference: [Cloudflare Workers — Astro framework guide](https://developers.cloudflare.com/workers/framework-guides/web-apps/astro/)
 
 ## Content and privacy
 
