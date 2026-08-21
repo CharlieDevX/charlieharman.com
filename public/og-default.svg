@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="glow" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#78a9ff" stop-opacity=".22"/>
+      <stop offset=".58" stop-color="#0b0d10" stop-opacity="0"/>
+    </linearGradient>
+    <pattern id="grid" width="64" height="64" patternUnits="userSpaceOnUse">
+      <path d="M64 0H0V64" fill="none" stroke="#252b35" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="630" fill="#0b0d10"/>
+  <rect width="1200" height="630" fill="url(#grid)" opacity=".55"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+  <path d="M78 72v92M150 72v92M78 118h72" fill="none" stroke="#f2f0ea" stroke-linecap="round" stroke-width="8"/>
+  <path d="M58 164h112" fill="none" stroke="#f04a1c" stroke-linecap="round" stroke-width="5"/>
+  <text x="72" y="310" fill="#f2f0ea" font-family="Arial, Helvetica, sans-serif" font-size="92" font-weight="600" letter-spacing="-5">Charlie Harman</text>
+  <text x="72" y="405" fill="#a8adb7" font-family="Georgia, serif" font-size="49">I build useful systems—and keep them running.</text>
+  <line x1="72" y1="500" x2="1128" y2="500" stroke="#252b35"/>
+  <text x="72" y="552" fill="#707784" font-family="Courier New, monospace" font-size="19" letter-spacing="2">ENGINEERING / PRODUCT / OPERATIONS</text>
+  <text x="1128" y="552" fill="#78a9ff" font-family="Courier New, monospace" font-size="19" text-anchor="end">CHARLIEHARMAN.COM</text>
+</svg>

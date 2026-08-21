@@ -1,0 +1,92 @@
+---
+interface Props {
+  kind: 'personal' | 'howie' | 'ghostgrid' | 'homelab';
+  size?: 'small' | 'large';
+}
+
+const { kind, size = 'small' } = Astro.props;
+---
+
+<span class:list={['logo-mark', `logo-mark--${kind}`, `logo-mark--${size}`]} aria-hidden="true">
+  {kind === 'personal' && (
+    <svg viewBox="0 0 44 44" role="presentation">
+      <path d="M11 7v30M33 7v30M11 22h22" />
+      <path class="accent-line" d="M5 37h34" />
+    </svg>
+  )}
+  {kind === 'howie' && (
+    <svg viewBox="0 0 44 44" role="presentation">
+      <rect x="2" y="2" width="40" height="40" rx="11" />
+      <path d="M16 13v18M28 13v18" />
+    </svg>
+  )}
+  {kind === 'ghostgrid' && (
+    <svg viewBox="0 0 44 44" role="presentation">
+      <path d="m22 3 15 10v18L22 41 7 31V13L22 3Z" />
+      <path d="m7 13 15 10 15-10M22 23v18M12 10l25 17M7 20l20 14M19 5l18 12" />
+    </svg>
+  )}
+  {kind === 'homelab' && (
+    <svg viewBox="0 0 44 44" role="presentation">
+      <rect x="6" y="4" width="32" height="10" rx="2" />
+      <rect x="6" y="17" width="32" height="10" rx="2" />
+      <rect x="6" y="30" width="32" height="10" rx="2" />
+      <path d="M11 9h1M11 22h1M11 35h1M17 9h15M17 22h15M17 35h15" />
+    </svg>
+  )}
+</span>
+
+<style>
+  .logo-mark {
+    display: inline-grid;
+    flex: none;
+    width: 2rem;
+    height: 2rem;
+    place-items: center;
+  }
+
+  .logo-mark--large {
+    width: clamp(4.5rem, 8vw, 6.5rem);
+    height: clamp(4.5rem, 8vw, 6.5rem);
+  }
+
+  svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+
+  .logo-mark--personal svg,
+  .logo-mark--ghostgrid svg,
+  .logo-mark--homelab svg {
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.6;
+  }
+
+  .logo-mark--personal .accent-line {
+    stroke: var(--accent-orange);
+  }
+
+  .logo-mark--howie svg {
+    fill: var(--accent-orange);
+  }
+
+  .logo-mark--howie path {
+    fill: none;
+    stroke: white;
+    stroke-linecap: round;
+    stroke-width: 6;
+  }
+
+  .logo-mark--ghostgrid {
+    color: var(--accent-blue);
+  }
+
+  .logo-mark--homelab {
+    color: var(--text-muted);
+  }
+</style>

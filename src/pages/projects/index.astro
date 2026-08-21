@@ -1,0 +1,48 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+
+const projects = (await getCollection('projects')).sort((a, b) => a.data.featuredOrder - b.data.featuredOrder);
+---
+
+<BaseLayout
+  title="Projects"
+  description="Selected software products and infrastructure systems designed, built, and operated by Charlie Harman."
+>
+  <header class="page-intro">
+    <div>
+      <p class="eyebrow"><span aria-hidden="true">//</span> Project index · {String(projects.length).padStart(2, '0')} studies</p>
+      <h1>Useful work,<br />in context.</h1>
+    </div>
+    <div class="page-intro__aside">
+      <p>Product decisions, system boundaries, operating constraints, and what the work made possible.</p>
+      <p>Private systems are intentionally sanitized.</p>
+    </div>
+  </header>
+
+  <section class="section project-index" aria-labelledby="project-list-title">
+    <h2 class="sr-only" id="project-list-title">All projects</h2>
+    {projects.map((project, index) => (
+      <ProjectCard project={project} index={index} featured={index === 0} />
+    ))}
+  </section>
+
+  <section class="cta-band" aria-labelledby="project-contact-cta">
+    <div>
+      <p class="eyebrow"><span aria-hidden="true">//</span> The next system</p>
+      <h2 id="project-contact-cta">Looking for an engineer who owns the edges?</h2>
+    </div>
+    <a class="button" href="/contact/">Get in touch <span aria-hidden="true">→</span></a>
+  </section>
+</BaseLayout>
+
+<style>
+  .project-index {
+    padding-bottom: 0;
+  }
+
+  .cta-band h2 {
+    max-width: 14ch;
+  }
+</style>

@@ -1,0 +1,39 @@
+---
+interface Props {
+  privacy: 'Public product' | 'Private system';
+}
+
+const { privacy } = Astro.props;
+const isPrivate = privacy === 'Private system';
+---
+
+<span class:list={['privacy-label', { 'privacy-label--private': isPrivate }] }>
+  <span class="privacy-dot" aria-hidden="true"></span>
+  {privacy}
+</span>
+
+<style>
+  .privacy-label {
+    align-items: center;
+    color: var(--text-muted);
+    display: inline-flex;
+    font-family: var(--font-mono);
+    font-size: 0.69rem;
+    gap: 0.45rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .privacy-dot {
+    background: var(--accent-orange);
+    border-radius: 50%;
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-orange) 18%, transparent);
+    height: 0.4rem;
+    width: 0.4rem;
+  }
+
+  .privacy-label--private .privacy-dot {
+    background: var(--accent-blue);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-blue) 18%, transparent);
+  }
+</style>

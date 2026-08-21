@@ -1,0 +1,50 @@
+---
+interface Props {
+  eyebrow: string;
+  heading: string;
+  actionHref?: string;
+  actionLabel?: string;
+}
+
+const { eyebrow, heading, actionHref, actionLabel } = Astro.props;
+---
+
+<header class="section-heading">
+  <div>
+    <p class="eyebrow"><span aria-hidden="true">//</span> {eyebrow}</p>
+    <h2>{heading}</h2>
+  </div>
+  {actionHref && actionLabel && (
+    <a class="text-link" href={actionHref}>{actionLabel}<span aria-hidden="true"> ↗</span></a>
+  )}
+</header>
+
+<style>
+  .section-heading {
+    align-items: end;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    gap: 1.5rem;
+    justify-content: space-between;
+    margin-bottom: clamp(1.75rem, 4vw, 3rem);
+    padding-bottom: 1.25rem;
+  }
+
+  h2 {
+    font-size: clamp(2rem, 5vw, 4.25rem);
+    letter-spacing: -0.055em;
+    line-height: 0.98;
+    margin: 0.8rem 0 0;
+  }
+
+  .eyebrow {
+    margin: 0;
+  }
+
+  @media (max-width: 34rem) {
+    .section-heading {
+      align-items: start;
+      flex-direction: column;
+    }
+  }
+</style>

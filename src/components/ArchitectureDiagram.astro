@@ -1,0 +1,138 @@
+---
+interface Props {
+  title: string;
+  nodes: string[];
+  accent?: 'orange' | 'blue' | 'steel';
+}
+
+const { title, nodes, accent = 'blue' } = Astro.props;
+---
+
+<figure class:list={['architecture', `architecture--${accent}`]}>
+  <div class="architecture__header">
+    <span>Conceptual architecture</span>
+    <small>sanitized / not to scale</small>
+  </div>
+  <ol aria-label={`${title} conceptual architecture`}>
+    {nodes.map((node, index) => (
+      <li>
+        <span>{String(index + 1).padStart(2, '0')}</span>
+        <strong>{node}</strong>
+      </li>
+    ))}
+  </ol>
+  <figcaption>
+    This intentionally high-level view communicates system boundaries without exposing infrastructure details.
+  </figcaption>
+</figure>
+
+<style>
+  .architecture {
+    --diagram-accent: var(--accent-blue);
+    background: var(--ink-deep);
+    border: 1px solid var(--border);
+    margin: 0;
+    padding: clamp(1rem, 3vw, 2rem);
+  }
+
+  .architecture--orange { --diagram-accent: var(--accent-orange); }
+  .architecture--steel { --diagram-accent: var(--accent-steel); }
+
+  .architecture__header {
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    font-family: var(--font-mono);
+    justify-content: space-between;
+    padding-bottom: 1rem;
+  }
+
+  .architecture__header span {
+    color: var(--text);
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .architecture__header small {
+    color: var(--text-faint);
+    font-size: 0.58rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  ol {
+    display: grid;
+    gap: 0;
+    grid-template-columns: repeat(var(--node-count, 4), minmax(0, 1fr));
+    list-style: none;
+    margin: 2rem 0;
+    padding: 0;
+  }
+
+  li {
+    align-items: center;
+    display: flex;
+    min-width: 0;
+    padding-right: clamp(1.25rem, 4vw, 3.5rem);
+    position: relative;
+  }
+
+  li:not(:last-child)::before {
+    background: var(--border-strong);
+    content: '';
+    height: 1px;
+    left: calc(100% - clamp(1.25rem, 4vw, 3.5rem) + 0.35rem);
+    position: absolute;
+    top: 50%;
+    width: calc(clamp(1.25rem, 4vw, 3.5rem) - 0.7rem);
+  }
+
+  li:not(:last-child)::after {
+    border-right: 1px solid var(--diagram-accent);
+    border-top: 1px solid var(--diagram-accent);
+    content: '';
+    height: 0.3rem;
+    position: absolute;
+    right: 0.3rem;
+    top: calc(50% - 0.19rem);
+    transform: rotate(45deg);
+    width: 0.3rem;
+  }
+
+  li > span {
+    align-items: center;
+    background: color-mix(in srgb, var(--diagram-accent) 12%, var(--surface));
+    border: 1px solid color-mix(in srgb, var(--diagram-accent) 35%, var(--border));
+    color: var(--diagram-accent);
+    display: flex;
+    flex: none;
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    height: 2.4rem;
+    justify-content: center;
+    width: 2.4rem;
+  }
+
+  li strong {
+    font-size: clamp(0.67rem, 1.2vw, 0.82rem);
+    font-weight: 500;
+    line-height: 1.25;
+    margin-left: 0.65rem;
+  }
+
+  figcaption {
+    border-top: 1px solid var(--border);
+    color: var(--text-faint);
+    font-size: 0.72rem;
+    line-height: 1.55;
+    padding-top: 1rem;
+  }
+
+  @media (max-width: 50rem) {
+    ol { gap: 1rem; grid-template-columns: 1fr; margin: 1.5rem 0; }
+    li { min-height: 3rem; padding: 0 0 1rem; }
+    li:not(:last-child)::before { bottom: -0.45rem; height: 1.1rem; left: 1.2rem; top: auto; width: 1px; }
+    li:not(:last-child)::after { bottom: -0.4rem; left: 1.02rem; right: auto; top: auto; transform: rotate(135deg); }
+  }
+</style>

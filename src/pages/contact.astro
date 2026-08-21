@@ -1,0 +1,96 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Contact"
+  description="Contact Charlie Harman about software engineering, infrastructure, and new-grad opportunities."
+>
+  <header class="contact-hero">
+    <p class="eyebrow"><span aria-hidden="true">//</span> Contact · Eastern Time</p>
+    <h1>Let’s talk about<br /><em>useful work.</em></h1>
+    <div class="contact-hero__bottom">
+      <p>
+        I’m interested in new-grad software engineering opportunities and conversations with people
+        building thoughtful products, internal tools, or the systems behind them.
+      </p>
+      <a class="button" href="mailto:hoffmann555@outlook.com">Write an email <span aria-hidden="true">↗</span></a>
+    </div>
+  </header>
+
+  <section class="contact-grid" aria-labelledby="contact-methods-heading">
+    <h2 id="contact-methods-heading" class="sr-only">Contact methods and profiles</h2>
+    <article class="contact-card contact-card--active">
+      <div class="contact-card__meta"><span>01</span><span>Preferred</span></div>
+      <h3>Email</h3>
+      <a href="mailto:hoffmann555@outlook.com">hoffmann555@outlook.com <span aria-hidden="true">↗</span></a>
+      <p>The best way to reach me. A little context about you and the work is always welcome.</p>
+    </article>
+    <div class="profile-grid" aria-label="Profiles not yet published">
+      <article class="contact-card contact-card--disabled">
+        <div class="contact-card__meta"><span>02</span><span>Not published</span></div>
+        <h3>GitHub</h3>
+        <span class="disabled-link" aria-disabled="true">Profile link intentionally withheld</span>
+      </article>
+      <article class="contact-card contact-card--disabled">
+        <div class="contact-card__meta"><span>03</span><span>Not published</span></div>
+        <h3>LinkedIn</h3>
+        <span class="disabled-link" aria-disabled="true">Profile link intentionally withheld</span>
+      </article>
+      <article class="contact-card contact-card--disabled">
+        <div class="contact-card__meta"><span>04</span><span>Not published</span></div>
+        <h3>Résumé</h3>
+        <span class="disabled-link" aria-disabled="true">Public document intentionally withheld</span>
+      </article>
+      <article class="contact-card contact-card--disabled">
+        <div class="contact-card__meta"><span>05</span><span>Not published</span></div>
+        <h3>Social</h3>
+        <span class="disabled-link" aria-disabled="true">No public link yet</span>
+      </article>
+    </div>
+  </section>
+
+  <aside class="contact-note">
+    <p class="eyebrow"><span aria-hidden="true">//</span> A small note</p>
+    <p>No contact form, tracking pixel, or account is hiding here—just a direct email link.</p>
+  </aside>
+</BaseLayout>
+
+<style>
+  .contact-hero { border-bottom: 1px solid var(--border); padding: clamp(4rem, 10vw, 8rem) 0 clamp(3rem, 7vw, 6rem); }
+  .contact-hero h1 { font-size: clamp(4rem, 12vw, 10.5rem); letter-spacing: -0.078em; line-height: 0.8; margin: clamp(2.5rem, 6vw, 5rem) 0; }
+  .contact-hero h1 em { color: var(--accent-blue); font-family: var(--font-serif); font-weight: 400; }
+  .contact-hero__bottom { align-items: end; display: flex; gap: 2rem; justify-content: flex-end; }
+  .contact-hero__bottom p { color: var(--text-muted); font-family: var(--font-serif); font-size: clamp(1.05rem, 2vw, 1.25rem); line-height: 1.6; margin: 0; max-width: 37rem; }
+  .contact-hero__bottom .button { flex: none; }
+  .contact-grid { display: grid; gap: 1px; grid-template-columns: 1fr 1fr; background: var(--border); border: 1px solid var(--border); margin-top: clamp(4rem, 9vw, 8rem); }
+  .profile-grid { display: grid; gap: 1px; grid-template-columns: 1fr 1fr; background: var(--border); }
+  .contact-card { background: var(--ink); padding: clamp(1.25rem, 3vw, 2.5rem); }
+  .contact-card--active { display: flex; flex-direction: column; min-height: 30rem; }
+  .contact-card__meta { color: var(--text-faint); display: flex; font-family: var(--font-mono); font-size: 0.58rem; justify-content: space-between; letter-spacing: 0.06em; text-transform: uppercase; }
+  .contact-card--active .contact-card__meta span:last-child { color: var(--status-green); }
+  .contact-card h3 { font-size: clamp(1.7rem, 4vw, 3.3rem); letter-spacing: -0.05em; margin: 4rem 0 1.25rem; }
+  .contact-card--active h3 { margin-top: auto; }
+  .contact-card a { font-family: var(--font-mono); font-size: clamp(0.76rem, 1.5vw, 0.95rem); text-underline-offset: 0.35rem; }
+  .contact-card a:hover { color: var(--accent-blue); }
+  .contact-card p { color: var(--text-muted); font-size: 0.8rem; line-height: 1.6; margin: 1.5rem 0 0; max-width: 28rem; }
+  .disabled-link { color: var(--text-faint); display: block; font-family: var(--font-mono); font-size: 0.6rem; line-height: 1.45; text-transform: uppercase; }
+  .contact-card--disabled { min-height: 15rem; }
+  .contact-card--disabled h3 { font-size: 1.5rem; margin-top: 3rem; }
+  .contact-note { align-items: center; border-bottom: 1px solid var(--border); border-top: 1px solid var(--border); display: grid; gap: 2rem; grid-template-columns: minmax(9rem, 0.25fr) 1fr; margin-top: clamp(4rem, 8vw, 7rem); padding: 1.5rem 0; }
+  .contact-note .eyebrow,
+  .contact-note > p:last-child { margin: 0; }
+  .contact-note > p:last-child { color: var(--text-muted); font-size: 0.82rem; }
+
+  @media (max-width: 52rem) {
+    .contact-grid { grid-template-columns: 1fr; }
+    .contact-card--active { min-height: 22rem; }
+  }
+
+  @media (max-width: 38rem) {
+    .contact-hero__bottom { align-items: start; flex-direction: column; }
+    .profile-grid { grid-template-columns: 1fr; }
+    .contact-card--disabled { min-height: 12rem; }
+    .contact-note { align-items: start; grid-template-columns: 1fr; }
+  }
+</style>

@@ -1,0 +1,347 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import ArchitectureDiagram from '../../components/ArchitectureDiagram.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import LogoMark from '../../components/LogoMark.astro';
+import MediaFrame from '../../components/MediaFrame.astro';
+import PrivacyLabel from '../../components/PrivacyLabel.astro';
+import SectionHeading from '../../components/SectionHeading.astro';
+import TagList from '../../components/TagList.astro';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  return projects.map((project) => ({
+    params: { slug: project.id },
+    props: { project },
+  }));
+}
+
+interface Props {
+  project: CollectionEntry<'projects'>;
+}
+
+const { project }: Props = Astro.props;
+const { data } = project;
+const allProjects = (await getCollection('projects')).sort((a, b) => a.data.featuredOrder - b.data.featuredOrder);
+const projectIndex = allProjects.findIndex((item) => item.id === project.id);
+const nextProject = allProjects[(projectIndex + 1) % allProjects.length];
+const kind = project.id === 'howie-helper' ? 'howie' : project.id as 'ghostgrid' | 'homelab';
+const projectUrl = `https://charlieharman.com/projects/${project.id}/`;
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'CreativeWork',
+  name: data.title,
+  description: data.description,
+  url: projectUrl,
+  author: {
+    '@type': 'Person',
+    name: 'Charlie Harman',
+    url: 'https://charlieharman.com',
+  },
+  keywords: data.technologies.join(', '),
+  ...(data.links[0] ? { sameAs: data.links[0].url } : {}),
+};
+---
+
+<BaseLayout
+  title={data.title}
+  description={data.description}
+  type="article"
+  structuredData={structuredData}
+>
+  <article class:list={['case-study', `case-study--${data.accent}`]}>
+    <header class="case-hero">
+      <div class="case-hero__meta">
+        <a class="text-link" href="/projects/"><span aria-hidden="true">←</span> Project index</a>
+        <PrivacyLabel privacy={data.privacy} />
+      </div>
+
+      <div class="case-hero__title">
+        <LogoMark kind={kind} size="large" />
+        <div>
+          <p class="eyebrow"><span aria-hidden="true">//</span> Case study · {data.year}</p>
+          <h1>{data.title}</h1>
+        </div>
+      </div>
+
+      <div class="case-hero__summary">
+        <p>{data.summary}</p>
+        <div class="case-hero__actions">
+          {data.links.map((link) => (
+            <a class="button" href={link.url} target="_blank" rel="noreferrer">
+              {link.label} <span aria-hidden="true">↗</span>
+            </a>
+          ))}
+          {data.links.length === 0 && <span class="private-note">No public source or live link</span>}
+        </div>
+      </div>
+
+      <dl class="case-facts">
+        {data.facts.map((fact) => (
+          <div><dt>{fact.value}</dt><dd>{fact.label}</dd></div>
+        ))}
+      </dl>
+    </header>
+
+    <section class="case-overview section" aria-labelledby="overview-heading">
+      <div class="case-overview__label">
+        <p class="eyebrow"><span aria-hidden="true">//</span> 01 · Overview</p>
+        <dl class="detail-list">
+          <div><dt>Role</dt><dd>{data.role}</dd></div>
+          <div><dt>Status</dt><dd>{data.status}</dd></div>
+          <div><dt>Privacy</dt><dd>{data.privacy}</dd></div>
+        </dl>
+      </div>
+      <div class="case-overview__story">
+        <h2 id="overview-heading">From real constraint<br />to working system.</h2>
+        <div class="story-columns">
+          <div><h3>The challenge</h3><p>{data.challenge}</p></div>
+          <div><h3>The response</h3><p>{data.response}</p></div>
+        </div>
+        <TagList tags={data.technologies} />
+      </div>
+    </section>
+
+    <section class="case-visual section--bordered" aria-label={`${data.title} interface representation`}>
+      <MediaFrame
+        title={data.media[0].title}
+        caption={data.media[0].caption}
+        variant={data.media[0].variant}
+        accent={data.accent}
+      />
+    </section>
+
+    <section class="case-features section" aria-labelledby="features-heading">
+      <SectionHeading eyebrow="02 · Build" heading="What the system needed." />
+      <h2 id="features-heading" class="sr-only">{data.title} features and engineering decisions</h2>
+      <div class="feature-list">
+        {data.sections.map((section, index) => (
+          <section class="feature-row" aria-labelledby={`feature-${index}`}>
+            <div class="feature-row__index"><span>{String(index + 1).padStart(2, '0')}</span></div>
+            <div class="feature-row__heading">
+              <p class="eyebrow">{section.eyebrow}</p>
+              <h3 id={`feature-${index}`}>{section.title}</h3>
+            </div>
+            <div class="feature-row__body">
+              <p>{section.body}</p>
+              <ul>
+                {section.bullets.map((bullet) => <li>{bullet}</li>)}
+              </ul>
+            </div>
+          </section>
+        ))}
+      </div>
+    </section>
+
+    <section class="section system-section" aria-labelledby="architecture-heading">
+      <SectionHeading eyebrow="03 · System" heading="Boundaries before boxes." />
+      <h2 id="architecture-heading" class="sr-only">Sanitized system architecture</h2>
+      <ArchitectureDiagram title={data.title} nodes={data.architecture} accent={data.accent} />
+    </section>
+
+    <section class="section gallery" aria-labelledby="gallery-heading">
+      <SectionHeading eyebrow="04 · Views" heading="Designed representations." />
+      <h2 id="gallery-heading" class="sr-only">Sanitized visual gallery</h2>
+      <div class="gallery__grid">
+        {data.media.slice(1).map((item) => (
+          <MediaFrame title={item.title} caption={item.caption} variant={item.variant} accent={data.accent} />
+        ))}
+      </div>
+    </section>
+
+    <section class="section outcomes" aria-labelledby="outcomes-heading">
+      <div class="outcomes__intro">
+        <p class="eyebrow"><span aria-hidden="true">//</span> 05 · Outcomes</p>
+        <h2 id="outcomes-heading">A stronger operating baseline.</h2>
+      </div>
+      <ol>
+        {data.outcomes.map((outcome, index) => (
+          <li><span>{String(index + 1).padStart(2, '0')}</span><p>{outcome}</p></li>
+        ))}
+      </ol>
+    </section>
+
+    <aside class="disclosure" aria-label="Privacy and project disclosure">
+      <p class="eyebrow"><span aria-hidden="true">//</span> Disclosure</p>
+      <p>{data.disclosure}</p>
+    </aside>
+
+    <nav class="next-project" aria-label="Continue to next project">
+      <span class="eyebrow">Next case study</span>
+      <a href={`/projects/${nextProject.id}/`}>
+        <span>{nextProject.data.title}</span>
+        <span aria-hidden="true">→</span>
+      </a>
+    </nav>
+  </article>
+</BaseLayout>
+
+<style>
+  .case-study { --case-accent: var(--accent-blue); }
+  .case-study--orange { --case-accent: var(--accent-orange); }
+  .case-study--steel { --case-accent: var(--accent-steel); }
+
+  .case-hero {
+    padding: 2rem 0 clamp(3.5rem, 9vw, 7rem);
+  }
+
+  .case-hero__meta {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .case-hero__title {
+    align-items: end;
+    display: flex;
+    gap: clamp(1rem, 3vw, 2.5rem);
+    margin-top: clamp(4rem, 9vw, 7.5rem);
+  }
+
+  .case-hero__title .eyebrow { margin: 0 0 1rem; }
+
+  h1 {
+    font-size: clamp(4rem, 13vw, 11rem);
+    letter-spacing: -0.078em;
+    line-height: 0.76;
+    margin: 0;
+  }
+
+  .case-hero__summary {
+    align-items: end;
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: 1fr auto;
+    margin: clamp(3rem, 7vw, 6rem) 0;
+    margin-left: auto;
+    max-width: 62rem;
+  }
+
+  .case-hero__summary > p {
+    color: var(--text-muted);
+    font-family: var(--font-serif);
+    font-size: clamp(1.25rem, 3vw, 2rem);
+    line-height: 1.45;
+    margin: 0;
+  }
+
+  .private-note {
+    border: 1px solid var(--border);
+    color: var(--text-faint);
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.06em;
+    padding: 0.85rem 1rem;
+    text-transform: uppercase;
+  }
+
+  .case-facts {
+    border-bottom: 1px solid var(--border);
+    border-top: 1px solid var(--border);
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    margin: 0;
+  }
+
+  .case-facts > div { padding: 1.5rem 0; }
+  .case-facts > div + div { border-left: 1px solid var(--border); padding-left: clamp(1rem, 3vw, 2rem); }
+  .case-facts dt { color: var(--text); font-size: clamp(1.6rem, 4vw, 3.2rem); letter-spacing: -0.05em; }
+  .case-facts dd { color: var(--text-faint); font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.05em; margin: 0.5rem 0 0; text-transform: uppercase; }
+
+  .case-overview {
+    display: grid;
+    gap: clamp(3rem, 8vw, 8rem);
+    grid-template-columns: minmax(13rem, 0.38fr) 1fr;
+  }
+
+  .case-overview__label > .eyebrow { margin: 0 0 2rem; }
+
+  .case-overview__story h2 {
+    font-size: clamp(2.8rem, 7vw, 6.5rem);
+    letter-spacing: -0.065em;
+    line-height: 0.9;
+    margin: 0 0 clamp(2.5rem, 6vw, 5rem);
+  }
+
+  .story-columns {
+    display: grid;
+    gap: clamp(2rem, 5vw, 4rem);
+    grid-template-columns: 1fr 1fr;
+    margin-bottom: 2.5rem;
+  }
+
+  .story-columns h3 { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.08em; margin: 0 0 1rem; text-transform: uppercase; }
+  .story-columns p { color: var(--text-muted); font-family: var(--font-serif); font-size: 1.07rem; line-height: 1.65; margin: 0; }
+  .case-visual { padding: clamp(1.5rem, 5vw, 5rem) 0; }
+  .feature-list { border-top: 1px solid var(--border); }
+
+  .feature-row {
+    border-bottom: 1px solid var(--border);
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: 3rem minmax(15rem, 0.55fr) 1fr;
+    padding: clamp(2rem, 5vw, 4rem) 0;
+  }
+
+  .feature-row__index { color: var(--case-accent); font-family: var(--font-mono); font-size: 0.68rem; }
+  .feature-row__heading .eyebrow { margin: 0 0 1rem; }
+  .feature-row__heading h3 { font-size: clamp(1.6rem, 4vw, 3.2rem); letter-spacing: -0.05em; line-height: 1; margin: 0; }
+  .feature-row__body > p { color: var(--text-muted); font-family: var(--font-serif); font-size: 1.05rem; line-height: 1.6; margin: 0 0 1.5rem; }
+  .feature-row__body ul { list-style: none; margin: 0; padding: 0; }
+  .feature-row__body li { border-top: 1px solid var(--border); color: var(--text-muted); font-size: 0.8rem; line-height: 1.5; padding: 0.8rem 0 0.8rem 1.25rem; position: relative; }
+  .feature-row__body li::before { color: var(--case-accent); content: '↳'; left: 0; position: absolute; }
+  .system-section { padding-top: 0; }
+  .gallery { padding-top: 0; }
+  .gallery__grid { display: grid; gap: 1rem; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .gallery__grid > :only-child { grid-column: 1 / -1; }
+
+  .outcomes {
+    border-top: 1px solid var(--border);
+    display: grid;
+    gap: clamp(3rem, 8vw, 8rem);
+    grid-template-columns: minmax(16rem, 0.55fr) 1fr;
+  }
+
+  .outcomes__intro h2 { font-size: clamp(2.6rem, 6vw, 5rem); letter-spacing: -0.06em; line-height: 0.96; margin: 1rem 0 0; }
+  .outcomes ol { list-style: none; margin: 0; padding: 0; }
+  .outcomes li { border-top: 1px solid var(--border); display: grid; gap: 1rem; grid-template-columns: 3rem 1fr; padding: 1.5rem 0; }
+  .outcomes li > span { color: var(--case-accent); font-family: var(--font-mono); font-size: 0.68rem; }
+  .outcomes li p { color: var(--text-muted); font-family: var(--font-serif); font-size: clamp(1.05rem, 2vw, 1.3rem); line-height: 1.55; margin: 0; }
+
+  .disclosure {
+    background: color-mix(in srgb, var(--case-accent) 5%, var(--surface));
+    border: 1px solid var(--border);
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: minmax(9rem, 0.25fr) 1fr;
+    padding: clamp(1.5rem, 4vw, 3rem);
+  }
+
+  .disclosure .eyebrow { margin: 0; }
+  .disclosure > p:last-child { color: var(--text-muted); font-size: 0.88rem; line-height: 1.65; margin: 0; max-width: 60rem; }
+  .next-project { border-top: 1px solid var(--border); margin-top: clamp(5rem, 10vw, 9rem); padding-top: 1.5rem; }
+  .next-project > span { display: block; }
+  .next-project a { align-items: center; display: flex; font-size: clamp(3rem, 9vw, 8rem); justify-content: space-between; letter-spacing: -0.065em; line-height: 1; margin-top: 2rem; text-decoration: none; transition: color var(--transition); }
+  .next-project a:hover { color: var(--case-accent); }
+
+  @media (max-width: 56rem) {
+    .case-overview,
+    .outcomes { grid-template-columns: 1fr; }
+    .feature-row { grid-template-columns: 2rem 1fr; }
+    .feature-row__body { grid-column: 2; }
+  }
+
+  @media (max-width: 42rem) {
+    .case-hero__title { align-items: start; flex-direction: column; }
+    .case-hero__summary { align-items: start; grid-template-columns: 1fr; }
+    .case-facts { grid-template-columns: 1fr; }
+    .case-facts > div + div { border-left: 0; border-top: 1px solid var(--border); padding-left: 0; }
+    .story-columns,
+    .gallery__grid { grid-template-columns: 1fr; }
+    .gallery__grid > :only-child { grid-column: auto; }
+    .feature-row { gap: 1rem; grid-template-columns: 1fr; }
+    .feature-row__body { grid-column: auto; }
+    .disclosure { grid-template-columns: 1fr; }
+  }
+</style>

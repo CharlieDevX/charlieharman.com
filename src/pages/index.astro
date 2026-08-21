@@ -1,0 +1,269 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import TagList from '../components/TagList.astro';
+
+const projects = (await getCollection('projects')).sort((a, b) => a.data.featuredOrder - b.data.featuredOrder);
+const skills = [
+  'TypeScript', 'React', 'Python', 'FastAPI', 'PostgreSQL', 'Supabase',
+  'Docker', 'Cloudflare', 'Linux', 'PWA', 'Testing', 'System operations',
+];
+
+const personData = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Charlie Harman',
+  url: 'https://charlieharman.com',
+  email: 'mailto:hoffmann555@outlook.com',
+  jobTitle: 'Computer Science Engineering Student',
+  alumniOf: {
+    '@type': 'CollegeOrUniversity',
+    name: 'Michigan State University',
+  },
+  knowsAbout: skills,
+};
+---
+
+<BaseLayout
+  title="Charlie Harman"
+  description="Charlie Harman is a fourth-year Computer Science Engineering student at Michigan State University who builds and operates useful software systems."
+  structuredData={personData}
+>
+  <section class="hero" aria-labelledby="home-title">
+    <div class="hero__topline">
+      <p class="eyebrow"><span aria-hidden="true">//</span> Computer science engineer · Michigan</p>
+      <p class="hero__availability"><span aria-hidden="true"></span> Available for new-grad opportunities</p>
+    </div>
+    <h1 id="home-title">
+      I build useful<br />
+      systems—and <em>keep</em><br />
+      them running.
+    </h1>
+    <div class="hero__footer">
+      <p>
+        Fourth-year Computer Science Engineering student at Michigan State University,
+        focused on practical products, resilient infrastructure, and the details between them.
+      </p>
+      <div class="hero__actions">
+        <a class="button" href="/projects/">Explore the work <span aria-hidden="true">↘</span></a>
+        <a class="text-link" href="mailto:hoffmann555@outlook.com">Email Charlie <span aria-hidden="true">↗</span></a>
+      </div>
+    </div>
+    <div class="hero__index" aria-hidden="true">
+      <span>42.73° N</span>
+      <span>ENGINEERING / PRODUCT / OPERATIONS</span>
+      <span>EST. 2026</span>
+    </div>
+  </section>
+
+  <section class="section projects-section" aria-labelledby="selected-work">
+    <SectionHeading
+      eyebrow="Selected work"
+      heading="Systems with a reason to exist."
+      actionHref="/projects/"
+      actionLabel="View project index"
+    />
+    <div class="project-list" id="selected-work">
+      {projects.map((project, index) => (
+        <ProjectCard project={project} index={index} featured={index === 0} />
+      ))}
+    </div>
+  </section>
+
+  <section class="section section--bordered approach" aria-labelledby="approach-heading">
+    <div class="approach__intro">
+      <p class="eyebrow"><span aria-hidden="true">//</span> How I work</p>
+      <h2 id="approach-heading">The demo is the beginning.</h2>
+    </div>
+    <div class="approach__body">
+      <p class="prose-lead">
+        I like the work after “it runs”: <strong>making behavior predictable, access deliberate,
+        deployment repeatable, and failure recoverable.</strong>
+      </p>
+      <ol>
+        <li>
+          <span>01</span>
+          <div><h3>Start with the work</h3><p>Understand the decision, constraint, or recurring friction before choosing the stack.</p></div>
+        </li>
+        <li>
+          <span>02</span>
+          <div><h3>Design the whole path</h3><p>Interface, data, authorization, delivery, and operations are parts of the same product.</p></div>
+        </li>
+        <li>
+          <span>03</span>
+          <div><h3>Leave it operable</h3><p>Tests, health signals, automation, and runbooks turn a useful build into a useful system.</p></div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section skills" aria-labelledby="skills-heading">
+    <SectionHeading eyebrow="Working set" heading="Tools in service of outcomes." />
+    <div class="skills__grid">
+      <h2 id="skills-heading" class="sr-only">Skills and technologies</h2>
+      <p>
+        Comfortable moving between product interfaces, typed APIs, relational data,
+        containerized infrastructure, and the feedback loops that keep them healthy.
+      </p>
+      <TagList tags={skills} label="Skills and technologies" />
+    </div>
+  </section>
+
+  <section class="cta-band" aria-labelledby="contact-cta">
+    <div>
+      <p class="eyebrow"><span aria-hidden="true">//</span> Start a conversation</p>
+      <h2 id="contact-cta">Useful problem?<br />I’m listening.</h2>
+    </div>
+    <a class="button" href="mailto:hoffmann555@outlook.com">Send an email <span aria-hidden="true">↗</span></a>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero {
+    min-height: min(54rem, calc(100vh - 5.25rem));
+    padding: clamp(3.5rem, 8vw, 7rem) 0 2rem;
+  }
+
+  .hero__topline,
+  .hero__footer,
+  .hero__index {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .hero__topline p { margin: 0; }
+
+  .hero__availability {
+    align-items: center;
+    color: var(--text-muted);
+    display: flex;
+    font-family: var(--font-mono);
+    font-size: 0.64rem;
+    gap: 0.55rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .hero__availability span {
+    background: var(--status-green);
+    border-radius: 50%;
+    box-shadow: 0 0 0 4px rgb(117 212 155 / 12%);
+    height: 0.42rem;
+    width: 0.42rem;
+  }
+
+  h1 {
+    font-size: clamp(4rem, 11.5vw, 10.4rem);
+    font-weight: 500;
+    letter-spacing: -0.078em;
+    line-height: 0.78;
+    margin: clamp(3rem, 8vw, 6.5rem) 0 clamp(3rem, 7vw, 5rem);
+    max-width: 11ch;
+  }
+
+  h1 em {
+    color: var(--accent-blue);
+    font-family: var(--font-serif);
+    font-weight: 400;
+  }
+
+  .hero__footer {
+    align-items: end;
+    gap: 2rem;
+    margin-left: auto;
+    max-width: 61rem;
+  }
+
+  .hero__footer > p {
+    color: var(--text-muted);
+    font-family: var(--font-serif);
+    font-size: clamp(1.05rem, 2vw, 1.3rem);
+    line-height: 1.55;
+    margin: 0;
+    max-width: 34rem;
+  }
+
+  .hero__actions {
+    align-items: center;
+    display: flex;
+    flex: none;
+    gap: 1.5rem;
+  }
+
+  .hero__index {
+    border-top: 1px solid var(--border);
+    color: var(--text-faint);
+    font-family: var(--font-mono);
+    font-size: 0.55rem;
+    letter-spacing: 0.08em;
+    margin-top: clamp(3rem, 7vw, 5rem);
+    padding-top: 1rem;
+  }
+
+  .approach {
+    display: grid;
+    gap: clamp(3rem, 8vw, 8rem);
+    grid-template-columns: minmax(14rem, 0.55fr) 1fr;
+  }
+
+  .approach__intro h2 {
+    font-size: clamp(2.8rem, 6vw, 5rem);
+    letter-spacing: -0.06em;
+    line-height: 0.95;
+    margin: 1.1rem 0 0;
+  }
+
+  .approach__body ol {
+    list-style: none;
+    margin: clamp(2rem, 5vw, 4rem) 0 0;
+    padding: 0;
+  }
+
+  .approach__body li {
+    border-top: 1px solid var(--border);
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: 3rem 1fr;
+    padding: 1.4rem 0;
+  }
+
+  .approach__body li > span {
+    color: var(--accent-orange);
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+  }
+
+  .approach__body h3 { font-size: 1rem; margin: 0; }
+  .approach__body li p { color: var(--text-muted); font-size: 0.86rem; line-height: 1.55; margin: 0.45rem 0 0; }
+
+  .skills__grid {
+    display: grid;
+    gap: clamp(2rem, 7vw, 7rem);
+    grid-template-columns: minmax(16rem, 0.6fr) 1fr;
+  }
+
+  .skills__grid > p {
+    color: var(--text-muted);
+    font-family: var(--font-serif);
+    font-size: 1.25rem;
+    line-height: 1.55;
+    margin: 0;
+  }
+
+  @media (max-width: 58rem) {
+    .hero { min-height: auto; }
+    .hero__footer { align-items: start; flex-direction: column; }
+    .approach { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 44rem) {
+    .hero__topline .eyebrow { max-width: 15rem; }
+    .hero__availability { display: none; }
+    .hero__actions { align-items: start; flex-direction: column; }
+    .hero__index span:nth-child(2) { display: none; }
+    .skills__grid { grid-template-columns: 1fr; }
+  }
+</style>

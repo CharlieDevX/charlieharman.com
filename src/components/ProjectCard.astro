@@ -1,0 +1,108 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import LogoMark from './LogoMark.astro';
+import MediaFrame from './MediaFrame.astro';
+import PrivacyLabel from './PrivacyLabel.astro';
+import TagList from './TagList.astro';
+
+interface Props {
+  project: CollectionEntry<'projects'>;
+  index: number;
+  featured?: boolean;
+}
+
+const { project, index, featured = false } = Astro.props;
+const { data } = project;
+const kind = project.id === 'howie-helper' ? 'howie' : project.id as 'ghostgrid' | 'homelab';
+const projectHref = `/projects/${project.id}/`;
+---
+
+<article class:list={['project-card', `project-card--${data.accent}`, { 'project-card--featured': featured }]}>
+  <div class="project-card__content">
+    <div class="project-card__meta">
+      <span class="project-number">{String(index + 1).padStart(2, '0')}</span>
+      <PrivacyLabel privacy={data.privacy} />
+    </div>
+    <div class="project-card__title-row">
+      <LogoMark kind={kind} />
+      <h3><a href={projectHref}>{data.title}</a></h3>
+    </div>
+    <p class="project-card__summary">{data.summary}</p>
+    <dl>
+      <div>
+        <dt>Role</dt>
+        <dd>{data.role}</dd>
+      </div>
+      <div>
+        <dt>Status</dt>
+        <dd>{data.status}</dd>
+      </div>
+    </dl>
+    <TagList tags={data.technologies.slice(0, featured ? 6 : 5)} />
+    <a class="project-card__link text-link" href={projectHref} aria-label={`Read the ${data.title} case study`}>
+      Read case study <span aria-hidden="true">↗</span>
+    </a>
+  </div>
+  <a class="project-card__visual" href={projectHref} tabindex="-1" aria-hidden="true">
+    <MediaFrame
+      title={data.media[0].title}
+      caption={data.media[0].caption}
+      variant={data.media[0].variant}
+      accent={data.accent}
+      compact={!featured}
+    />
+  </a>
+</article>
+
+<style>
+  .project-card {
+    border-top: 1px solid var(--border);
+    display: grid;
+    gap: clamp(2rem, 6vw, 6rem);
+    grid-template-columns: minmax(0, 0.9fr) minmax(20rem, 1.1fr);
+    padding: clamp(2rem, 6vw, 5rem) 0;
+  }
+
+  .project-card:first-child { border-top: 0; padding-top: 0; }
+  .project-card__content { align-self: center; }
+  .project-card__meta { align-items: center; display: flex; justify-content: space-between; margin-bottom: 2.25rem; }
+  .project-number { color: var(--text-faint); font-family: var(--font-mono); font-size: 0.72rem; }
+  .project-card__title-row { align-items: center; display: flex; gap: 0.85rem; }
+
+  h3 {
+    font-size: clamp(2rem, 5vw, 4.5rem);
+    letter-spacing: -0.055em;
+    line-height: 0.95;
+    margin: 0;
+  }
+
+  h3 a { color: var(--text); text-decoration: none; }
+  h3 a:hover { color: var(--project-accent, var(--accent-blue)); }
+  .project-card--orange { --project-accent: var(--accent-orange); }
+  .project-card--blue { --project-accent: var(--accent-blue); }
+  .project-card--steel { --project-accent: var(--accent-steel); }
+
+  .project-card__summary {
+    color: var(--text-muted);
+    font-family: var(--font-serif);
+    font-size: clamp(1.05rem, 2vw, 1.3rem);
+    line-height: 1.55;
+    margin: 1.5rem 0 2rem;
+    max-width: 36rem;
+  }
+
+  dl { border-bottom: 1px solid var(--border); border-top: 1px solid var(--border); margin: 0 0 1.5rem; }
+  dl > div { display: grid; gap: 1rem; grid-template-columns: 4rem 1fr; padding: 0.75rem 0; }
+  dl > div + div { border-top: 1px solid var(--border); }
+  dt { color: var(--text-faint); font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.06em; text-transform: uppercase; }
+  dd { color: var(--text-muted); font-size: 0.78rem; line-height: 1.4; margin: 0; }
+  .project-card__link { display: inline-block; margin-top: 1.75rem; }
+  .project-card__visual { align-self: center; display: block; min-width: 0; text-decoration: none; transition: transform var(--transition); }
+  .project-card__visual:hover { transform: translateY(-0.3rem); }
+
+  @media (max-width: 52rem) {
+    .project-card { gap: 2.25rem; grid-template-columns: 1fr; }
+    .project-card__visual { grid-row: 1; }
+    .project-card__meta { margin-bottom: 1.5rem; }
+  }
+</style>

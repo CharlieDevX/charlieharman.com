@@ -1,0 +1,105 @@
+---
+import '../styles/global.css';
+import LogoMark from '../components/LogoMark.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  type?: 'website' | 'article';
+  structuredData?: Record<string, unknown> | Record<string, unknown>[];
+}
+
+const {
+  title,
+  description,
+  image = '/og-default.png',
+  type = 'website',
+  structuredData,
+} = Astro.props;
+
+const siteName = 'Charlie Harman';
+const pageTitle = title === siteName ? title : `${title} — ${siteName}`;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const socialImage = new URL(image, Astro.site);
+const currentPath = Astro.url.pathname;
+const navItems = [
+  { href: '/projects/', label: 'Projects' },
+  { href: '/about/', label: 'About' },
+  { href: '/contact/', label: 'Contact' },
+];
+
+const isCurrent = (href: string) => href === '/projects/'
+  ? currentPath.startsWith('/projects')
+  : currentPath === href;
+
+const jsonLd = structuredData
+  ? JSON.stringify(structuredData).replace(/</g, '\\u003c')
+  : undefined;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#0b0d10" />
+    <meta name="color-scheme" content="dark" />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="alternate icon" href="/favicon.svg" />
+    <meta property="og:type" content={type} />
+    <meta property="og:site_name" content={siteName} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={socialImage} />
+    <meta property="og:image:alt" content="Charlie Harman — computer science engineer and systems builder" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={socialImage} />
+    <title>{pageTitle}</title>
+    {jsonLd && <script is:inline type="application/ld+json" set:html={jsonLd} />}
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <div class="site-shell">
+      <header class="site-header">
+        <a class="brand" href="/" aria-label="Charlie Harman, home">
+          <LogoMark kind="personal" />
+          <span class="brand__name">Charlie Harman</span>
+          <span class="brand__initials">CH</span>
+        </a>
+        <nav aria-label="Primary navigation">
+          <ul>
+            {navItems.map((item) => (
+              <li><a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>{item.label}</a></li>
+            ))}
+          </ul>
+        </nav>
+      </header>
+
+      <main id="main-content">
+        <slot />
+      </main>
+
+      <footer class="site-footer">
+        <div class="site-footer__lead">
+          <p class="eyebrow"><span aria-hidden="true">//</span> Open to useful work</p>
+          <p>Let’s build something that holds up outside the demo.</p>
+        </div>
+        <div class="site-footer__contact">
+          <a href="mailto:hoffmann555@outlook.com">hoffmann555@outlook.com <span aria-hidden="true">↗</span></a>
+          <p>Michigan · Eastern Time</p>
+        </div>
+        <div class="site-footer__bottom">
+          <span>© {new Date().getFullYear()} Charlie Harman</span>
+          <span>Designed &amp; built with Astro</span>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>
