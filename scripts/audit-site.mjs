@@ -1,5 +1,6 @@
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { extname, join, relative } from 'node:path';
+import { CONTACT_EMAIL } from '../src/config.mjs';
 
 const root = new URL('../dist/', import.meta.url).pathname;
 const expectedRoutes = [
@@ -95,13 +96,14 @@ const forbidden = [
   'linkedin.com',
   'href="#"',
   'TODO',
+  'hoffmann555@outlook.com',
 ];
 
 for (const value of forbidden) {
   if (builtText.toLowerCase().includes(value.toLowerCase())) errors.push(`Built output contains forbidden placeholder/private value: ${value}`);
 }
 
-if (!builtText.includes('mailto:hoffmann555@outlook.com')) errors.push('Public email action is missing.');
+if (!builtText.includes(`mailto:${CONTACT_EMAIL}`)) errors.push('Public email action is missing.');
 if (!builtText.includes('href="https://howiehelper.app"')) errors.push('Howie Helper public app link is missing.');
 if (!existsSync(join(root, 'robots.txt'))) errors.push('robots.txt is missing.');
 if (!existsSync(join(root, 'sitemap-index.xml'))) errors.push('sitemap-index.xml is missing.');

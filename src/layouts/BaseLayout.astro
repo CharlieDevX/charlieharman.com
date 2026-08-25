@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import LogoMark from '../components/LogoMark.astro';
+import { CONTACT_EMAIL } from '../config.mjs';
 
 interface Props {
   title: string;
@@ -92,7 +93,7 @@ const jsonLd = structuredData
           <p>Let’s build something that holds up outside the demo.</p>
         </div>
         <div class="site-footer__contact">
-          <a href="mailto:hoffmann555@outlook.com">hoffmann555@outlook.com <span aria-hidden="true">↗</span></a>
+          <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL} <span aria-hidden="true">↗</span></a>
           <p>Michigan · Eastern Time</p>
         </div>
         <div class="site-footer__bottom">
