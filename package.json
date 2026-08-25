@@ -11,7 +11,8 @@
     "build": "astro check && astro build",
     "check": "astro check",
     "audit:site": "node scripts/audit-site.mjs",
-    "preview": "astro preview"
+    "preview": "astro preview",
+    "deploy": "bash scripts/deploy.sh"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.4",
