@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { CONTACT_EMAIL } from '../config.mjs';
 ---
 
 <BaseLayout
@@ -14,7 +15,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         I’m interested in new-grad software engineering opportunities and conversations with people
         building thoughtful products, internal tools, or the systems behind them.
       </p>
-      <a class="button" href="mailto:hoffmann555@outlook.com">Write an email <span aria-hidden="true">↗</span></a>
+      <a class="button" href={`mailto:${CONTACT_EMAIL}`}>Write an email <span aria-hidden="true">↗</span></a>
     </div>
   </header>
 
@@ -23,7 +24,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     <article class="contact-card contact-card--active">
       <div class="contact-card__meta"><span>01</span><span>Preferred</span></div>
       <h3>Email</h3>
-      <a href="mailto:hoffmann555@outlook.com">hoffmann555@outlook.com <span aria-hidden="true">↗</span></a>
+      <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL} <span aria-hidden="true">↗</span></a>
       <p>The best way to reach me. A little context about you and the work is always welcome.</p>
     </article>
     <div class="profile-grid" aria-label="Profiles not yet published">

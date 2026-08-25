@@ -4,6 +4,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import SectionHeading from '../components/SectionHeading.astro';
 import TagList from '../components/TagList.astro';
+import { CONTACT_EMAIL } from '../config.mjs';
 
 const projects = (await getCollection('projects')).sort((a, b) => a.data.featuredOrder - b.data.featuredOrder);
 const skills = [
@@ -16,7 +17,7 @@ const personData = {
   '@type': 'Person',
   name: 'Charlie Harman',
   url: 'https://charlieharman.com',
-  email: 'mailto:hoffmann555@outlook.com',
+  email: `mailto:${CONTACT_EMAIL}`,
   jobTitle: 'Computer Science Engineering Student',
   alumniOf: {
     '@type': 'CollegeOrUniversity',
@@ -48,7 +49,7 @@ const personData = {
       </p>
       <div class="hero__actions">
         <a class="button" href="/projects/">Explore the work <span aria-hidden="true">↘</span></a>
-        <a class="text-link" href="mailto:hoffmann555@outlook.com">Email Charlie <span aria-hidden="true">↗</span></a>
+        <a class="text-link" href={`mailto:${CONTACT_EMAIL}`}>Email Charlie <span aria-hidden="true">↗</span></a>
       </div>
     </div>
     <div class="hero__index" aria-hidden="true">
@@ -116,7 +117,7 @@ const personData = {
       <p class="eyebrow"><span aria-hidden="true">//</span> Start a conversation</p>
       <h2 id="contact-cta">Useful problem?<br />I’m listening.</h2>
     </div>
-    <a class="button" href="mailto:hoffmann555@outlook.com">Send an email <span aria-hidden="true">↗</span></a>
+    <a class="button" href={`mailto:${CONTACT_EMAIL}`}>Send an email <span aria-hidden="true">↗</span></a>
   </section>
 </BaseLayout>
 
