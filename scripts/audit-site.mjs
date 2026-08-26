@@ -11,6 +11,7 @@ const expectedRoutes = [
   '/projects/homelab/',
   '/about/',
   '/contact/',
+  '/ghostgrid-privacy/',
   '/404.html',
 ];
 
