@@ -1,0 +1,50 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { CONTACT_EMAIL } from '../config.mjs';
+---
+
+<BaseLayout
+  title="GhostGrid Privacy Policy"
+  description="Privacy policy for GhostGrid, a personal, single-user application operated solely by its owner."
+>
+  <header class="page-intro privacy-intro">
+    <div>
+      <p class="eyebrow"><span aria-hidden="true">//</span> GhostGrid · Policy</p>
+      <h1>GhostGrid<br />Privacy Policy</h1>
+    </div>
+    <div class="page-intro__aside">
+      <p class="privacy-updated">Last updated: 2026-08-26</p>
+      <p>The policy for a system with exactly one user: its owner.</p>
+    </div>
+  </header>
+
+  <section class="section privacy-policy" aria-label="Privacy policy">
+    <div class="privacy-policy__copy">
+      <p>
+        GhostGrid is a personal, single-user application operated solely by its owner. It accesses
+        only the owner’s own email accounts, with read-only permissions, via the official Gmail API
+        and Microsoft Graph API.
+      </p>
+      <p>
+        Data retrieved is limited to email metadata and short snippets, stored only on the owner’s
+        private, self-hosted server, and is never shared with, sold to, or made accessible to any
+        third party. No other users exist, and no data from anyone other than the owner is collected.
+      </p>
+      <p>
+        Google API data usage complies with the Google API Services User Data Policy, including the
+        Limited Use requirements.
+      </p>
+      <p class="privacy-policy__contact">
+        Contact: <a class="text-link" href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .privacy-intro h1 { max-width: 14ch; }
+  .privacy-updated { color: var(--accent-blue); font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.06em; text-transform: uppercase; }
+  .privacy-policy__copy { display: grid; gap: 1.5rem; max-width: 46ch; }
+  .privacy-policy__copy p { color: var(--text-muted); font-family: var(--font-serif); font-size: 1.1rem; line-height: 1.7; margin: 0; }
+  .privacy-policy__contact { font-family: var(--font-mono); }
+</style>
