@@ -68,6 +68,9 @@ const interests = [
   <section class="section working-style" aria-labelledby="style-heading">
     <SectionHeading eyebrow="Working style" heading="Direct, deliberate, iterative." />
     <h2 class="sr-only" id="style-heading">How Charlie works</h2>
+    <p class="working-style__lead">
+      Anyone can be curious about a problem. The work is asking it the <em>right</em> questions.
+    </p>
     <div class="principles">
       <article>
         <span>01</span>
@@ -116,6 +119,8 @@ const interests = [
   .education__degree { font-size: clamp(1.7rem, 4vw, 3.2rem); letter-spacing: -0.04em; margin: 0; }
   .education__status { color: var(--accent-blue); font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.06em; margin: 1rem 0 0; text-transform: uppercase; }
   .education__grid > p { color: var(--text-muted); font-family: var(--font-serif); font-size: 1.15rem; line-height: 1.65; margin: 0; }
+  .working-style__lead { color: var(--text-muted); font-family: var(--font-serif); font-size: clamp(1.15rem, 2.4vw, 1.65rem); line-height: 1.5; margin: 0 0 clamp(2rem, 5vw, 3.5rem); max-width: 46ch; }
+  .working-style__lead em { color: var(--accent-blue); font-style: italic; }
   .principles { display: grid; gap: 1px; grid-template-columns: repeat(3, 1fr); background: var(--border); border: 1px solid var(--border); }
   .principles article { background: var(--ink); min-height: 22rem; padding: clamp(1.25rem, 3vw, 2.5rem); }
   .principles article > span { color: var(--accent-orange); font-family: var(--font-mono); font-size: 0.68rem; }

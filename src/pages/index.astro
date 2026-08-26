@@ -54,7 +54,7 @@ const personData = {
     </div>
     <div class="hero__index" aria-hidden="true">
       <span>42.73° N</span>
-      <span>ENGINEERING / PRODUCT / OPERATIONS</span>
+      <span>CURIOSITY → QUESTIONS → SYSTEMS</span>
       <span>EST. 2026</span>
     </div>
   </section>
@@ -76,12 +76,12 @@ const personData = {
   <section class="section section--bordered approach" aria-labelledby="approach-heading">
     <div class="approach__intro">
       <p class="eyebrow"><span aria-hidden="true">//</span> How I work</p>
-      <h2 id="approach-heading">The demo is the beginning.</h2>
+      <h2 id="approach-heading">See it with <em>curiosity</em>.<br />Solve it with questions.</h2>
     </div>
     <div class="approach__body">
       <p class="prose-lead">
-        I like the work after “it runs”: <strong>making behavior predictable, access deliberate,
-        deployment repeatable, and failure recoverable.</strong>
+        The demo is the beginning. I like the work after “it runs”: <strong>making behavior
+        predictable, access deliberate, deployment repeatable, and failure recoverable.</strong>
       </p>
       <ol>
         <li>
@@ -115,7 +115,7 @@ const personData = {
   <section class="cta-band" aria-labelledby="contact-cta">
     <div>
       <p class="eyebrow"><span aria-hidden="true">//</span> Start a conversation</p>
-      <h2 id="contact-cta">Useful problem?<br />I’m listening.</h2>
+      <h2 id="contact-cta">Hard problem?<br />I’m <em>curious</em>.</h2>
     </div>
     <a class="button" href={`mailto:${CONTACT_EMAIL}`}>Send an email <span aria-hidden="true">↗</span></a>
   </section>
@@ -206,15 +206,31 @@ const personData = {
 
   .approach {
     display: grid;
-    gap: clamp(3rem, 8vw, 8rem);
-    grid-template-columns: minmax(14rem, 0.55fr) 1fr;
+    gap: clamp(2.5rem, 6vw, 4.5rem) clamp(3rem, 8vw, 8rem);
+    grid-template-columns: minmax(8rem, 0.3fr) 1fr;
+  }
+
+  .approach__intro {
+    grid-column: 1 / -1;
+  }
+
+  .approach__body {
+    grid-column: 2;
   }
 
   .approach__intro h2 {
-    font-size: clamp(2.8rem, 6vw, 5rem);
-    letter-spacing: -0.06em;
-    line-height: 0.95;
+    font-size: clamp(2.6rem, 6.4vw, 5.6rem);
+    letter-spacing: -0.062em;
+    line-height: 0.92;
     margin: 1.1rem 0 0;
+    max-width: 24ch;
+  }
+
+  .approach__intro h2 em,
+  .cta-band h2 em {
+    color: var(--accent-blue);
+    font-family: var(--font-serif);
+    font-weight: 400;
   }
 
   .approach__body ol {
@@ -258,6 +274,7 @@ const personData = {
     .hero { min-height: auto; }
     .hero__footer { align-items: start; flex-direction: column; }
     .approach { grid-template-columns: 1fr; }
+    .approach__body { grid-column: 1; }
   }
 
   @media (max-width: 44rem) {

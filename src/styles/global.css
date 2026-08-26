@@ -127,6 +127,14 @@ h3 {
   display: none;
 }
 
+.brand__initials sup {
+  color: var(--accent-orange);
+  font-size: 0.62em;
+  margin-left: 0.06em;
+  position: relative;
+  top: -0.26em;
+}
+
 .site-header nav ul {
   align-items: center;
   display: flex;

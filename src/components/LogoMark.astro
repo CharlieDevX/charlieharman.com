@@ -9,9 +9,10 @@ const { kind, size = 'small' } = Astro.props;
 
 <span class:list={['logo-mark', `logo-mark--${kind}`, `logo-mark--${size}`]} aria-hidden="true">
   {kind === 'personal' && (
-    <svg viewBox="0 0 44 44" role="presentation">
-      <path d="M11 7v30M33 7v30M11 22h22" />
-      <path class="accent-line" d="M5 37h34" />
+    <svg viewBox="0 0 72 72" role="presentation">
+      <path d="M39 15C31 8 17 11 10 24C4 37 10 51 24 54C34 56 43 51 48 43" />
+      <path d="M32 54 44 14M47 55l11-37M23 43c12-5 23-13 37-10" />
+      <path class="accent-line" d="M54 8c5-3 11-1 10 3-.5 2-3 3-6 3 4 0 7 2 6 5-1 4-6 5-10 3" />
     </svg>
   )}
   {kind === 'howie' && (
@@ -69,6 +70,10 @@ const { kind, size = 'small' } = Astro.props;
 
   .logo-mark--personal .accent-line {
     stroke: var(--accent-orange);
+  }
+
+  .logo-mark--personal svg {
+    stroke-width: 2.75;
   }
 
   .logo-mark--howie svg {

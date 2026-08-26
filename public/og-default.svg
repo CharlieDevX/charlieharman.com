@@ -11,8 +11,11 @@
   <rect width="1200" height="630" fill="#0b0d10"/>
   <rect width="1200" height="630" fill="url(#grid)" opacity=".55"/>
   <rect width="1200" height="630" fill="url(#glow)"/>
-  <path d="M78 72v92M150 72v92M78 118h72" fill="none" stroke="#f2f0ea" stroke-linecap="round" stroke-width="8"/>
-  <path d="M58 164h112" fill="none" stroke="#f04a1c" stroke-linecap="round" stroke-width="5"/>
+  <g transform="translate(58 54) scale(1.8)" fill="none" stroke="#f2f0ea" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.75">
+    <path d="M39 15C31 8 17 11 10 24C4 37 10 51 24 54C34 56 43 51 48 43"/>
+    <path d="M32 54 44 14M47 55l11-37M23 43c12-5 23-13 37-10"/>
+    <path d="M54 8c5-3 11-1 10 3-.5 2-3 3-6 3 4 0 7 2 6 5-1 4-6 5-10 3" stroke="#f04a1c"/>
+  </g>
   <text x="72" y="310" fill="#f2f0ea" font-family="Arial, Helvetica, sans-serif" font-size="92" font-weight="600" letter-spacing="-5">Charlie Harman</text>
   <text x="72" y="405" fill="#a8adb7" font-family="Georgia, serif" font-size="49">I build useful systems—and keep them running.</text>
   <line x1="72" y1="500" x2="1128" y2="500" stroke="#252b35"/>
