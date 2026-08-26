@@ -109,6 +109,7 @@ if (!builtText.includes('href="https://howiehelper.app"')) errors.push('Howie He
 if (!existsSync(join(root, 'robots.txt'))) errors.push('robots.txt is missing.');
 if (!existsSync(join(root, 'sitemap-index.xml'))) errors.push('sitemap-index.xml is missing.');
 if (!existsSync(join(root, 'favicon.svg'))) errors.push('favicon.svg is missing.');
+if (!existsSync(join(root, 'apple-touch-icon.png'))) errors.push('apple-touch-icon.png is missing.');
 if (!existsSync(join(root, 'og-default.png'))) errors.push('Open Graph image is missing.');
 
 if (errors.length) {
