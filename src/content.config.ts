@@ -18,6 +18,10 @@ const mediaItem = z.object({
   title: z.string(),
   caption: z.string(),
   variant: z.enum(['phone', 'dashboard', 'system', 'operations']),
+  image: z.string().optional(),
+  alt: z.string().optional(),
+  shape: z.enum(['wide', 'phone']).optional(),
+  retina: z.boolean().optional(),
 });
 
 const projects = defineCollection({

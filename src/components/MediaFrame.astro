@@ -5,12 +5,28 @@ interface Props {
   variant: 'phone' | 'dashboard' | 'system' | 'operations';
   accent?: 'orange' | 'blue' | 'steel';
   compact?: boolean;
+  image?: string;
+  alt?: string;
+  shape?: 'wide' | 'phone';
+  retina?: boolean;
+  eager?: boolean;
 }
 
-const { title, caption, variant, accent = 'blue', compact = false } = Astro.props;
+const { title, caption, variant, accent = 'blue', compact = false, image, alt = '', shape = 'wide', retina = false, eager = false } = Astro.props;
+const dims = shape === 'phone' ? { width: 1170, height: 2532 } : { width: 1600, height: 1000 };
+const webpSet = image ? (retina ? `${image}.webp 1x, ${image}@2x.webp 2x` : `${image}.webp`) : '';
+const pngSet = image ? (retina ? `${image}.png 1x, ${image}@2x.png 2x` : `${image}.png`) : '';
 ---
 
-<figure class:list={['media-frame', `media-frame--${variant}`, `media-frame--${accent}`, { 'media-frame--compact': compact }]}>
+<figure class:list={['media-frame', `media-frame--${variant}`, `media-frame--${accent}`, { 'media-frame--compact': compact, 'media-frame--image': !!image, [`media-frame--shape-${shape}`]: !!image }]}>
+  {image ? (
+  <div class="media-frame__canvas media-frame__canvas--image">
+    <picture>
+      <source type="image/webp" srcset={webpSet} />
+      <img src={`${image}.png`} srcset={pngSet} alt={alt} width={dims.width} height={dims.height} loading={eager ? 'eager' : 'lazy'} decoding="async" />
+    </picture>
+  </div>
+  ) : (
   <div class="media-frame__canvas" aria-hidden="true">
     <div class="window-bar">
       <span></span><span></span><span></span>
@@ -76,6 +92,7 @@ const { title, caption, variant, accent = 'blue', compact = false } = Astro.prop
       </div>
     )}
   </div>
+  )}
   <figcaption>
     <strong>{title}</strong>
     <span>{caption}</span>
@@ -105,6 +122,36 @@ const { title, caption, variant, accent = 'blue', compact = false } = Astro.prop
     min-height: 15rem;
     overflow: hidden;
     position: relative;
+  }
+
+  .media-frame__canvas--image {
+    background: var(--ink-deep);
+    min-height: 0;
+  }
+
+  .media-frame__canvas--image picture {
+    display: block;
+    inset: 0;
+    position: absolute;
+  }
+
+  .media-frame__canvas--image img {
+    display: block;
+    height: 100%;
+    width: 100%;
+  }
+
+  .media-frame__canvas--image img {
+    object-fit: cover;
+    object-position: center top;
+  }
+
+  .media-frame--shape-phone .media-frame__canvas--image {
+    aspect-ratio: 9 / 16;
+  }
+
+  .media-frame--compact .media-frame__canvas--image {
+    min-height: 0;
   }
 
   .media-frame--compact .media-frame__canvas {
@@ -322,6 +369,8 @@ const { title, caption, variant, accent = 'blue', compact = false } = Astro.prop
 
   @media (max-width: 34rem) {
     .media-frame__canvas { aspect-ratio: 4 / 3; min-height: 13rem; }
+    .media-frame__canvas--image { aspect-ratio: 16 / 10; min-height: 0; }
+    .media-frame--shape-phone .media-frame__canvas--image { aspect-ratio: 9 / 16; }
     .phone-shell { width: 34%; }
     .phone-shell--back { left: 14%; }
     .phone-shell--front { left: 42%; }

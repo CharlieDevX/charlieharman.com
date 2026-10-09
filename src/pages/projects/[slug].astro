@@ -47,6 +47,7 @@ const structuredData = {
   title={data.title}
   description={data.description}
   type="article"
+  image={data.media[0].image ? `${data.media[0].image}.png` : undefined}
   structuredData={structuredData}
 >
   <article class:list={['case-study', `case-study--${data.accent}`]}>
@@ -108,6 +109,11 @@ const structuredData = {
         caption={data.media[0].caption}
         variant={data.media[0].variant}
         accent={data.accent}
+        image={data.media[0].image}
+        alt={data.media[0].alt}
+        shape={data.media[0].shape}
+        retina={data.media[0].retina}
+        eager
       />
     </section>
 
@@ -144,7 +150,9 @@ const structuredData = {
       <h2 id="gallery-heading" class="sr-only">Sanitized visual gallery</h2>
       <div class="gallery__grid">
         {data.media.slice(1).map((item) => (
-          <MediaFrame title={item.title} caption={item.caption} variant={item.variant} accent={data.accent} />
+          <div class:list={['gallery__item', item.image ? `gallery__item--${item.shape ?? 'wide'}` : 'gallery__item--illustration']}>
+            <MediaFrame title={item.title} caption={item.caption} variant={item.variant} accent={data.accent} image={item.image} alt={item.alt} shape={item.shape} retina={item.retina} />
+          </div>
         ))}
       </div>
     </section>
@@ -293,7 +301,11 @@ const structuredData = {
   .feature-row__body li::before { color: var(--case-accent); content: '↳'; left: 0; position: absolute; }
   .system-section { padding-top: 0; }
   .gallery { padding-top: 0; }
-  .gallery__grid { display: grid; gap: 1rem; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .gallery__grid { display: grid; gap: 1rem; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .gallery__item { display: grid; min-width: 0; }
+  .gallery__item--illustration { grid-column: span 2; }
+  .gallery__item--wide { grid-column: 1 / -1; }
+  .gallery__item--phone { grid-column: span 1; }
   .gallery__grid > :only-child { grid-column: 1 / -1; }
 
   .outcomes {
@@ -338,8 +350,9 @@ const structuredData = {
     .case-facts { grid-template-columns: 1fr; }
     .case-facts > div + div { border-left: 0; border-top: 1px solid var(--border); padding-left: 0; }
     .story-columns,
-    .gallery__grid { grid-template-columns: 1fr; }
-    .gallery__grid > :only-child { grid-column: auto; }
+    .gallery__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .gallery__item--illustration, .gallery__item--wide { grid-column: 1 / -1; }
+    .gallery__grid > :only-child { grid-column: 1 / -1; }
     .feature-row { gap: 1rem; grid-template-columns: 1fr; }
     .feature-row__body { grid-column: auto; }
     .disclosure { grid-template-columns: 1fr; }

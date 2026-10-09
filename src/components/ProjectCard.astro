@@ -50,6 +50,11 @@ const projectHref = `/projects/${project.id}/`;
       variant={data.media[0].variant}
       accent={data.accent}
       compact={!featured}
+      image={data.media[0].image}
+      alt={data.media[0].alt}
+      shape={data.media[0].shape}
+      retina={data.media[0].retina}
+      eager
     />
   </a>
 </article>
