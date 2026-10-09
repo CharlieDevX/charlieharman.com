@@ -1,80 +1,81 @@
 ---
 title: Homelab
-shortTitle: Self-hosted infrastructure
-summary: A private infrastructure practice focused on resilient service orchestration, deliberate storage, GPU workloads, observability, and recoverable operations.
-description: Sanitized case study of a private homelab covering Docker Compose orchestration, storage, secure remote access, GPU workloads, monitoring, backups, and runbooks.
-status: Private · operated continuously
+shortTitle: Self-hosted Ubuntu server
+summary: A 24/7 Ubuntu server at home running nearly 30 Docker containers, including a media server for family and friends and the backend for Howie Helper.
+description: My homelab is one Ubuntu server with Docker, Tailscale, monitoring, and nightly backups. It hosts a media server, Nextcloud, Pi-hole, local LLMs, and the backend for my store's scheduling app.
+status: Running 24/7 · since Jan 2026
 privacy: Private system
-role: Infrastructure engineering & operations
-year: 2024–present
+role: "Hardware, networking, and operations; scripts AI-assisted with Claude Code"
+year: 2026–present
 technologies:
-  - Linux
-  - Docker Compose
-  - Containers
-  - GPU compute
-  - Private networking
-  - Monitoring
-  - Automation
-  - Backups
+  - Ubuntu
+  - Docker
+  - Tailscale
+  - Cloudflare Tunnel
+  - Pi-hole
+  - Ollama
+  - MLX
+  - Uptime Kuma
 featuredOrder: 3
 accent: steel
 links: []
 facts:
-  - value: Composed
-    label: services organized by responsibility
-  - value: Observable
-    label: health and capacity tracked over time
-  - value: Recoverable
-    label: backups paired with restoration plans
-challenge: Running useful services is easy when everything is healthy. The real engineering work appears during upgrades, capacity pressure, dependency failure, remote troubleshooting, and recovery from a bad change.
-response: This environment is designed as a small operations platform rather than a list of installed software. Containers, storage, private access, monitoring, automation, and recovery documentation are built as connected responsibilities.
+  - value: ~30
+    label: Docker containers on one server
+  - value: "0"
+    label: open router ports
+  - value: Nightly
+    label: backups, kept for 30 days
+challenge: I wanted to run real services for real people (a media server for my family and friends, file sync for me, and the backend for my store's scheduling app) without paying for cloud hosting or opening my home network to the internet.
+response: I run everything on one Ubuntu server, a Ryzen 7 3700X with 64 GB of RAM and an RTX 2080 Super, with services grouped in Docker. Monitoring and backups are in place, so I usually hear about a problem from my phone before anyone else notices it.
 sections:
-  - eyebrow: Orchestration
-    title: Services grouped by responsibility
-    body: Docker Compose keeps related workloads understandable and repeatable. Configuration conventions make it possible to reason about dependencies, updates, persistent data, and resource needs without relying on memory.
+  - eyebrow: Services
+    title: What actually runs on it
+    body: About a dozen containers make up the media stack, with GPU transcoding for family and friends. A dozen more run the self-hosted Supabase backend behind Howie Helper. The rest are personal and operational tools.
     bullets:
-      - Composed service groups with explicit dependencies and health checks
-      - Deliberate separation between configuration, secrets, and persistent data
-      - Repeatable update and rollback procedures for routine maintenance
-  - eyebrow: Storage & compute
-    title: Workloads matched to the right resources
-    body: Storage design accounts for durability, performance, growth, and backup cost. GPU-capable workloads are isolated so accelerated compute can be scheduled without making every service depend on it.
+      - Jellyfin media server with GPU transcoding
+      - Self-hosted Supabase (Postgres, auth, REST API) and PowerSync for Howie Helper
+      - Nextcloud, Pi-hole DNS for the home network, and Ollama with 4–8B models on the GPU
+      - Separately, my M1 Pro MacBook runs larger models and Qwen image generation through MLX
+  - eyebrow: Access
+    title: No open ports
+    body: Admin pages listen only on the server and get HTTPS through Tailscale. The two things that need to be public go out through Tailscale Funnel and a Cloudflare Tunnel, so the router has no ports forwarded.
     bullets:
-      - Storage tiers organized around lifecycle and recovery requirements
-      - GPU workloads with explicit device and resource boundaries
-      - Capacity checks that surface pressure before it becomes an outage
-  - eyebrow: Access & observability
-    title: Private access, visible health
-    body: Remote access remains inside a private trust boundary. Monitoring and alerting focus on actionable service health, host capacity, storage condition, and backup status instead of collecting telemetry without a response plan.
+      - Tailscale with MagicDNS and HTTPS for admin and personal access
+      - Cloudflare Tunnel for howiehelper.app
+      - Tailscale Funnel for the media server
+  - eyebrow: Operations
+    title: Monitoring, backups, and runbooks
+    body: Uptime Kuma checks services and sends phone alerts, Scrutiny checks disk health every hour, and the server alerts my phone when it shuts down or boots. Backups run nightly. I've done one partial restore test (the Nextcloud database); a full-server restore hasn't been tested yet, and there's no offsite copy yet.
     bullets:
-      - Private remote access without publishing administrative surfaces
-      - Health monitoring and alerting tied to operational actions
-      - Centralized inspection paths for faster incident diagnosis
-  - eyebrow: Recovery
-    title: Operations documented for the bad day
-    body: Automation handles repeatable work, while runbooks record the order and judgment needed for uncommon failures. Backups are considered useful only when their restore path is understood.
+      - Uptime Kuma with ntfy phone alerts, plus Scrutiny for disk health
+      - Nightly backups kept 30 days on two separate drives
+      - 14 written runbooks for routine fixes
+  - eyebrow: Fixes
+    title: Problems I actually hit
+    body: Most of what I've learned came from things breaking. These are a few of the fixes.
     bullets:
-      - Backup plans based on data value and acceptable recovery windows
-      - Recovery notes for host, storage, and application-level failures
-      - Routine automation that remains inspectable and reversible
+      - A start-up script crashed partway through, so 7 of 12 service groups silently never came up after a reboot
+      - My phone lost DNS away from home because Tailscale was sending it to Pi-hole, which only works on the home network
+      - Moved the data drives from USB to SATA and combined them into one pool, keeping databases off it
 media:
-  - title: Operational system view
-    caption: A designed overview of capacity and health; no actual hosts, services, or metrics are shown.
-    variant: operations
-  - title: Layered infrastructure boundaries
-    caption: A generalized flow from private access through orchestration to state and recovery.
+  - title: How it's laid out
+    caption: An illustration of the layout. No real hostnames, addresses, or services are shown.
     variant: system
+  - title: Health at a glance
+    caption: An illustration of the monitoring view. No real metrics are shown.
+    variant: operations
 outcomes:
-  - Built a durable environment for learning production operations through real maintenance and failure modes.
-  - Reduced change risk with repeatable service definitions, monitoring, backup planning, and runbooks.
-  - Supported storage-heavy and GPU-capable workloads while keeping administrative access private.
+  - Family, friends, and my store's app depend on it every day.
+  - I get problems from phone alerts and runbooks instead of from people telling me something is down.
+  - Next steps are an offsite backup and a full restore test.
 architecture:
-  - Private access boundary
-  - Service orchestration
-  - Compute & storage
-  - Observability
-  - Backup & recovery
-disclosure: This case study intentionally omits addresses, identifiers, service inventory, network topology, media-library details, security findings, credentials, and configuration. The diagram communicates responsibilities, not a deployable map.
+  - Tailscale & Cloudflare Tunnel
+  - Docker service groups
+  - Ryzen 7 / 64 GB / RTX 2080 Super
+  - Monitoring & alerts
+  - Nightly backups
+disclosure: Addresses, hostnames, credentials, and detailed network layout are left out on purpose. Most scripts and automation were written AI-assisted with Claude Code and reviewed by me; the hardware work, networking setup, and decisions are mine.
 ---
 
-The homelab is valuable because it is operated, maintained, and recovered—not because of how many services it can list.
+This is a working server that people use every day, so keeping it running matters more than adding to it.
