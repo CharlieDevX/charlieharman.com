@@ -59,12 +59,44 @@ sections:
       - 32 SQL migrations and SQL scripts that check the access rules
       - CI for type-checking and tests; deploys are manual
 media:
-  - title: Schedule on a phone
-    caption: An illustration of the interface. No real schedules or crew names are shown.
+  - title: Crew view, manager draft, and availability request
+    caption: Mockups rendered from the real app with made-up crew and a demo store. No real schedules or names.
     variant: phone
-  - title: How the pieces connect
-    caption: Phone → Cloudflare Tunnel → self-hosted Supabase and PowerSync on my homelab.
+    image: /projects/howie-helper/hh-hero
+    alt: Three phones showing Howie Helper's crew schedule view, the manager's draft week with availability flags, and an availability request form.
+    shape: wide
+    retina: true
+  - title: Schedule editor on a wide screen
+    caption: The full draft week with hours per shift, weekly totals, and availability flags from crew requests.
     variant: system
+    image: /projects/howie-helper/hh-schedule-desktop
+    alt: Desktop view of the weekly schedule editor with shifts by role, hours, totals, and highlighted availability conflicts.
+    shape: wide
+    retina: true
+  - title: Manager's draft week
+    caption: One availability conflict (red) and one warning (amber) flagged before anything is published.
+    variant: phone
+    image: /projects/howie-helper/hh-schedule-draft
+    alt: Phone view of the draft schedule with a red-outlined conflict and an amber-outlined warning.
+    shape: phone
+  - title: Crew view
+    caption: A crew member sees only the published week, with their own row pinned at the top.
+    variant: phone
+    image: /projects/howie-helper/hh-schedule-crew
+    alt: Phone view of the published schedule with the viewer's row pinned at the top.
+    shape: phone
+  - title: Availability request
+    caption: Crew request an availability change or time off, and it goes to the GM for approval.
+    variant: phone
+    image: /projects/howie-helper/hh-availability-request
+    alt: Phone form for requesting availability changes by day, with open, close, any, and off options.
+    shape: phone
+  - title: Unsynced changes stay on the phone
+    caption: Edits made offline wait on the device, and the app counts them until they sync.
+    variant: phone
+    image: /projects/howie-helper/hh-unsynced-notice
+    alt: Phone view with a notice that three unsaved items are waiting on the device until they sync.
+    shape: phone
 outcomes:
   - The store's weekly schedule is built and published in the app.
   - I've worked through real offline sync, access control, and self-hosting problems for a small group of real users.
@@ -75,7 +107,7 @@ architecture:
   - Supabase auth & API
   - PostgreSQL with RLS
   - Homelab via Cloudflare Tunnel
-disclosure: Howie Helper is an independent personal project. It is not an official Hungry Howie's product and is not endorsed by or affiliated with Hungry Howie's Pizza. Crew names, schedules, and store numbers are intentionally left out of this page.
+disclosure: Images are mockups rendered from the real app against a throwaway database with made-up data. Howie Helper is an independent personal project. It is not an official Hungry Howie's product and is not endorsed by or affiliated with Hungry Howie's Pizza. Crew names, schedules, and store numbers are intentionally left out of this page.
 ---
 
 This is a small tool for a small group of people. I'm keeping it narrow and honest about what it is.
