@@ -3,3 +3,6 @@ dist/
 .astro/
 .DS_Store
 *.log
+
+# Local AI agent output
+Claude outputs/
