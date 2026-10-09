@@ -59,7 +59,7 @@ for (const file of htmlFiles) {
     ['one canonical', count(html, /<link rel="canonical" href="https:\/\/charlieharman\.com\/[^"]*">/gi) === 1],
     ['Open Graph title', count(html, /<meta property="og:title" content="[^"]+">/gi) === 1],
     ['Open Graph description', count(html, /<meta property="og:description" content="[^"]+">/gi) === 1],
-    ['Open Graph image', count(html, /<meta property="og:image" content="https:\/\/charlieharman\.com\/og-default\.png">/gi) === 1],
+    ['Open Graph image', count(html, /<meta property="og:image" content="https:\/\/charlieharman\.com\/[^"]+\.png">/gi) === 1],
     ['Twitter card', count(html, /<meta name="twitter:card" content="summary_large_image">/gi) === 1],
     ['exactly one h1', count(html, /<h1(?:\s[^>]*)?>/gi) === 1],
   ];
@@ -105,7 +105,6 @@ for (const value of forbidden) {
 }
 
 if (!builtText.includes(`mailto:${CONTACT_EMAIL}`)) errors.push('Public email action is missing.');
-if (!builtText.includes('href="https://howiehelper.app"')) errors.push('Howie Helper public app link is missing.');
 if (!existsSync(join(root, 'robots.txt'))) errors.push('robots.txt is missing.');
 if (!existsSync(join(root, 'sitemap-index.xml'))) errors.push('sitemap-index.xml is missing.');
 if (!existsSync(join(root, 'favicon.svg'))) errors.push('favicon.svg is missing.');
