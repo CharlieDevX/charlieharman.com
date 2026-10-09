@@ -1,11 +1,11 @@
 ---
 title: Howie Helper
-shortTitle: Store operations PWA
-summary: A phone-first toolkit that turns five recurring store workflows into one reliable, offline-capable system for multi-store teams.
-description: Case study of Howie Helper, a React and TypeScript PWA for practical store operations with offline sync, role controls, and a self-hosted data platform.
-status: Live · actively maintained
-privacy: Public product
-role: Product design, full-stack engineering & operations
+shortTitle: Store scheduling app
+summary: A phone-first scheduling app I built and host for the pizza store where I'm an assistant manager. My GM uses it to build and publish the weekly schedule.
+description: Howie Helper is a small, invite-only React and TypeScript PWA I built for my own store. It's used for the weekly schedule, and under the hood it has offline sync, per-store access rules, and a self-hosted backend.
+status: In use at my store · schedule only
+privacy: Private system
+role: "Solo build, AI-assisted with Claude Code: design, architecture, hosting"
 year: "2026"
 technologies:
   - React
@@ -14,74 +14,68 @@ technologies:
   - PowerSync
   - Supabase
   - PostgreSQL
-  - Cloudflare
   - Docker
-  - Playwright
+  - Cloudflare Tunnel
   - Vitest
+facts:
+  - value: One store
+    label: a handful of people, invite only
+  - value: Offline
+    label: local copy on the phone, writes queued until reconnect
+  - value: ~2,500
+    label: unit and component tests
 featuredOrder: 1
 accent: orange
-links:
-  - label: Open public app
-    url: https://howiehelper.app
-facts:
-  - value: Five
-    label: store workflows in one product
-  - value: Offline
-    label: usable through unreliable connectivity
-  - value: End to end
-    label: product, platform, delivery, and support
-challenge: Store-closing work often lives across calculators, paper notes, messages, and memory. The problem was not a lack of software; it was the lack of one fast, trustworthy tool that matched how the work actually happens on a phone during a busy shift.
-response: Charlie designed and built a single installable web app around the highest-friction workflows, then owned the supporting data, synchronization, deployment, security, and test systems required to make it dependable in day-to-day use.
+links: []
+challenge: Our weekly schedule lived in a shared spreadsheet that's hard to read and edit on a phone, and crew availability and time-off requests came in through texts. I wanted one place on my phone where the schedule gets built, checked against availability, and published.
+response: I built an installable web app, starting with a static HTML prototype in June 2026 and moving to React, TypeScript and a self-hosted Supabase backend in July. Today the store uses only the schedule. I also built other tools (inventory, nightly numbers, dough planning, drawer cash), but they're hidden or unused at the store.
 sections:
-  - eyebrow: Workflow design
-    title: One shift, five practical tools
-    body: Each workflow was reduced to the decisions a team member actually needs to make, with large touch targets, clear progress, and summaries that can be checked before submission.
+  - eyebrow: Schedule
+    title: Draft, check, publish
+    body: Managers edit a private draft of the week while the crew only see the published version. Availability and time-off requests show on the draft grid, so conflicts are visible before anything goes out.
     bullets:
-      - Nightly inventory with guided item counts and readable summaries
-      - Drawer cash and nightly-number calculations with visible checks
-      - Dough-build planning and schedule-making in the same installable app
-  - eyebrow: Data integrity
-    title: Local first when the network is not
-    body: The interface stays useful through intermittent connectivity. Local changes are synchronized when a connection returns, while the product makes sync state legible instead of pretending every request is immediate.
+      - Weekly grid editor with a draft/publish gate
+      - Crew availability and time-off requests overlaid on the draft
+      - Copy-out to the owners' spreadsheet, plus PNG/PDF export
+  - eyebrow: Offline first
+    title: Works when the store Wi-Fi doesn't
+    body: Each phone keeps a local SQLite copy of its store's data through PowerSync. Writes queue while offline and sync when the connection returns, so IDs and write rules have to survive retries. For example, the cash log is append-only.
     bullets:
-      - Offline-capable reads and writes through a local synchronization layer
-      - Conflict-aware data boundaries organized around stores and users
-      - Explicit loading, completion, error, and reconnect states
-  - eyebrow: Platform ownership
-    title: Built beyond the browser
-    body: The product includes a self-hosted Supabase and PostgreSQL platform, containerized services, Cloudflare delivery, and repeatable deployment automation. Application behavior and operating behavior are treated as one system.
+      - Local SQLite replica with a queued write path
+      - Separate upload queue for photo attachments
+      - Prompt-to-update banner, because installed copies kept running old versions after deploys
+  - eyebrow: Access control
+    title: Rules in the database, not just the UI
+    body: Every table has Postgres row-level security scoped to a store, with platform admins and a 7-rank member ladder on top. I checked the rules by impersonating real accounts before a second store's GM was given access.
     bullets:
-      - Role-aware access for team members, managers, and multiple stores
-      - Automated delivery paths for the PWA and supporting services
-      - Monitoring and operational documentation for routine maintenance
-  - eyebrow: Confidence
-    title: Security and tests as product work
-    body: Access rules, validation, and regression coverage were developed alongside features. The goal is a tool that is safe to change, not simply a prototype that happens to work once.
+      - Per-store row-level security on every table
+      - Invite-code signup and role-based tool visibility per store
+      - API rate limits tuned per endpoint, because a rate-limit error on sign-in would end the session and clear the offline queue
+  - eyebrow: Running it
+    title: Self-hosted on my homelab
+    body: The backend (Postgres, auth, REST API, storage, sync) runs in Docker on my homelab and is exposed through a Cloudflare Tunnel. Deploys are a script I run by hand, and GitHub Actions type-checks and tests every PR.
     bullets:
-      - Row-level access rules and server-side authorization boundaries
-      - Unit, integration, and end-to-end coverage across critical workflows
-      - Deliberate handling of customer information, credentials, and endpoints
+      - Self-hosted Supabase and PowerSync in Docker
+      - 32 SQL migrations and SQL scripts that check the access rules
+      - CI for type-checking and tests; deploys are manual
 media:
-  - title: Phone-first workflow system
-    caption: A designed representation of the installable interface; no operational data is shown.
+  - title: Schedule on a phone
+    caption: An illustration of the interface. No real schedules or crew names are shown.
     variant: phone
-  - title: Delivery and data boundaries
-    caption: A sanitized system view from the public edge to synchronized data services.
+  - title: How the pieces connect
+    caption: Phone → Cloudflare Tunnel → self-hosted Supabase and PowerSync on my homelab.
     variant: system
-  - title: Operational feedback
-    caption: Health, deployment, and recovery signals are part of the product surface behind the scenes.
-    variant: operations
 outcomes:
-  - Consolidated five recurring workflows into one coherent, installable experience.
-  - Kept the core tools available during unstable connectivity and made synchronization state understandable.
-  - Established a production-minded foundation for access control, automated delivery, monitoring, and continued iteration.
+  - The store's weekly schedule is built and published in the app.
+  - I've worked through real offline sync, access control, and self-hosting problems for a small group of real users.
+  - Other tools exist but aren't in use, and I'm keeping the app focused on scheduling for now.
 architecture:
   - Installable React PWA
-  - Offline sync boundary
-  - Supabase API & auth
-  - PostgreSQL data layer
-  - Operations & delivery
-disclosure: Howie Helper is an independent project. It is not an official Hungry Howie’s product and is not endorsed by or affiliated with Hungry Howie’s Pizza. Credentials, customer information, and internal service endpoints are intentionally excluded from this case study.
+  - PowerSync local replica
+  - Supabase auth & API
+  - PostgreSQL with RLS
+  - Homelab via Cloudflare Tunnel
+disclosure: Howie Helper is an independent personal project. It is not an official Hungry Howie's product and is not endorsed by or affiliated with Hungry Howie's Pizza. Crew names, schedules, and store numbers are intentionally left out of this page.
 ---
 
-The system is continually refined around real operational feedback while keeping sensitive store and customer data out of public materials.
+This is a small tool for a small group of people. I'm keeping it narrow and honest about what it is.
